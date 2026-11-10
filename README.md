@@ -1,2 +1,2 @@
 # Lielvardnieki
-Mūzikas  lapa Andra Solima
+Draudzes  lapa
