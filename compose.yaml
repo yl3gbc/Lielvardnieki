@@ -1,0 +1,17 @@
+services:
+  php:
+    image: lielvardnieki-php:8.5
+    pull_policy: never
+    user: "1000:1000"
+    working_dir: /site
+    volumes: ["./laravel-app:/site", "./laravel-framework:/framework:ro"]
+    ports: ["127.0.0.1:8082:8082"]
+    environment: {APP_DEBUG: "false", DB_CONNECTION: pgsql, DB_HOST: database, DB_DATABASE: "${POSTGRES_DB}", DB_USERNAME: "${POSTGRES_USER}", DB_PASSWORD: "${POSTGRES_PASSWORD}", SESSION_DRIVER: file, CACHE_STORE: file}
+    command: ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8082"]
+    depends_on: [database]
+  database:
+    image: lielvardnieki-postgres:dev
+    pull_policy: never
+    environment: {POSTGRES_DB: "${POSTGRES_DB}", POSTGRES_USER: "${POSTGRES_USER}", POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"}
+    volumes: ["postgres_data:/var/lib/postgresql"]
+volumes: {postgres_data: {}}
